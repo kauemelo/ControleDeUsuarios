@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿
+using ControleDeUsuarios.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ControleDeUsuarios.Controllers
@@ -9,22 +11,40 @@ namespace ControleDeUsuarios.Controllers
     {
         [HttpGet("ola")]
         public IActionResult OlaPessoa()
+
         {
-            string nome = "Jose";
-            if (nome.Equals("Maria"))
-            {
-                return Ok($"Olá {nome}");
-            }
-            else
-            {
-                return NotFound();
-            }
-           
+            // Usuario usuario = new Usuario();
+            //Usuario usuario = new Usuario("Kalicia");
+            Usuario usuario = new Usuario(1, "Maria", "maria@gmail.com");
+
+
+
+            return Ok($"Olá {usuario.Nome}!Seu email é: {usuario.Email}");
+
+            //if (usuario.Nome.Equals("Kaue"))
+            //{
+            //    return Ok($"Olá {usuario.Nome}, Cara de porco");
+            //}
+            //else
+            //{
+            //    return NotFound();
+            //}
+
         }
         [HttpGet("teste/outroteste")]
-        public IActionResult Teste ()
+        public IActionResult Teste()
         {
             return Ok("Teste");
         }
+
+        [HttpPost]
+        public IActionResult Cadastrar([FromBody] Usuario usuario)
+        {
+               
+
+            return Ok($"Usuario {usuario.Nome} cadastrado com sucesso!");
+        }
+
+
     }
 }
