@@ -37,6 +37,12 @@ namespace ControleDeUsuarios.Controllers
             return Ok("Teste");
         }
 
+        [HttpGet]
+        public ActionResult<List <Usuario>> BuscarTodosUsuarios() 
+        {
+            return Ok();
+        }
+
         [HttpPost]
         public IActionResult Cadastrar([FromBody] Usuario usuario)
         {
