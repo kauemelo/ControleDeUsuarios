@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ControleDeUsuarios.Data
 {
-    public class CrontroleUsuariosDBContex: DbContext
+    public class ControleUsuariosDbContext: DbContext
     {
-        public CrontroleUsuariosDBContex(DbContextOptions<CrontroleUsuariosDBContex> options) 
+        public ControleUsuariosDbContext(DbContextOptions<ControleUsuariosDbContext> options) 
             : base(options) 
         { 
         }

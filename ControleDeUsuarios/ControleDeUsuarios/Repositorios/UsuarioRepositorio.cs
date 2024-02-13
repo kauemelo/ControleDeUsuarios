@@ -1,35 +1,58 @@
 ﻿using ControleDeUsuarios.Models;
 using ControleDeUsuarios.Repositorios.Interfaces;
+using ControleDeUsuarios.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace ControleDeUsuarios.Repositorios
 {
     public class UsuarioRepositorio : IUsuarioRepositorio
     {
-
-        public Task<Usuario> BuscarPorID(int id)
+        //Definir a variavel que vai conectar com o banco de dados
+        public readonly ControleUsuariosDbContext _dbContext;
+        public UsuarioRepositorio(ControleUsuariosDbContext dbContext)
         {
-            throw new NotImplementedException();
+            _dbContext = dbContext;
         }
 
-        public Task<List<Usuario>> BuscarTodosUsuarios()
+        public List<Usuario> BuscarTodosUsuarios()
         {
-            throw new NotImplementedException();
+            var listaUsuarios = _dbContext.Usuarios.ToList();
+            return listaUsuarios;
         }
-        public Task<Usuario> Adicionar(Usuario usuario)
+        public Usuario BuscarPorID(int id)
         {
-            throw new NotImplementedException();
+            var usuario = _dbContext.Usuarios.FirstOrDefault(u => u.Id == id);
+            return usuario;
         }
-
-        public Task<bool> Apagar(int id)
+        public Usuario Adicionar(Usuario usuario)
         {
-            throw new NotImplementedException();
+            _dbContext.Usuarios.Add(usuario);
+            _dbContext.SaveChanges();
+            return usuario;
         }
-
-        public Task<Usuario> Autorizar(Usuario usuario, int id)
+        public Usuario Atualizar(Usuario usuario, int id)
         {
-            throw new NotImplementedException();
+            Usuario usuarioPorId = BuscarPorID(id);
+            if (usuarioPorId == null)
+            {
+                throw new Exception($"Usuario com id ={id} não encontrado!");
+            }
+            usuarioPorId.Nome = usuario.Nome;
+            usuarioPorId.Email = usuario.Email;
+            _dbContext.Update(usuarioPorId);
+            _dbContext.SaveChanges();
+            return usuarioPorId;
         }
-
-      
+        public bool Apagar(int id)
+        {
+            Usuario usuarioPorId = BuscarPorID(id);
+            if (usuarioPorId == null)
+            {
+                throw new Exception($"Usuario com id ={id} não encontrado!");
+            }
+            _dbContext.Remove(usuarioPorId);
+            _dbContext.SaveChanges();
+            return true;
+        }
     }
 }

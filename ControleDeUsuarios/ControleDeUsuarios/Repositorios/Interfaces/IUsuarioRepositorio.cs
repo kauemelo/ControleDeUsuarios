@@ -4,14 +4,14 @@ namespace ControleDeUsuarios.Repositorios.Interfaces
 {
     public interface IUsuarioRepositorio
     {
-        Task<List<Usuario>> BuscarTodosUsuarios();
+        List<Usuario> BuscarTodosUsuarios();
 
-        Task<Usuario> BuscarPorID(int id);
+        Usuario BuscarPorID(int id);
 
-        Task<Usuario> Adicionar(Usuario usuario);
+        Usuario Adicionar(Usuario usuario);
 
-        Task<Usuario> Autorizar(Usuario usuario, int id);
+       Usuario Atualizar(Usuario usuario, int id);
 
-        Task<bool> Apagar(int id);
+        bool Apagar(int id);
     }
 }
