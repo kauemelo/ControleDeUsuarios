@@ -2,6 +2,7 @@ using ControleDeUsuarios.Data;
 using ControleDeUsuarios.Repositorios;
 using ControleDeUsuarios.Repositorios.Interfaces;
 using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -11,11 +12,13 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Configurando o contexto do EntityFramework
 builder.Services.AddEntityFrameworkSqlServer()
-.AddDbContext<ControleUsuariosDbContext>(
-    options => options.UseSqlServer(builder.Configuration.GetConnectionString("DataBase"))
+    .AddDbContext<ControleUsuariosDbContext>(
+        options => options.UseSqlServer(builder.Configuration.GetConnectionString("Database"))
     );
 
+// Injeção de dependência
 builder.Services.AddScoped<IUsuarioRepositorio, UsuarioRepositorio>();
 
 var app = builder.Build();
