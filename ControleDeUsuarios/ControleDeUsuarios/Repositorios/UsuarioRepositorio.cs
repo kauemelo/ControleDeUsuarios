@@ -14,25 +14,26 @@ namespace ControleDeUsuarios.Repositorios
             _dbContext = dbContext;
         }
 
-        public List<Usuario> BuscarTodosUsuarios()
+        public async Task<List<Usuario>> BuscarTodosUsuarios()
         {
-            var listaUsuarios = _dbContext.Usuarios.ToList();
+            var listaUsuarios = await _dbContext.Usuarios.ToListAsync();
             return listaUsuarios;
         }
-        public Usuario BuscarPorID(int id)
+        public async Task<Usuario> BuscarPorID(int id)
         {
-            var usuario = _dbContext.Usuarios.FirstOrDefault(u => u.Id == id);
+            var usuario = await _dbContext.Usuarios.FirstOrDefaultAsync(u => u.Id == id);
             return usuario;
         }
-        public Usuario Adicionar(Usuario usuario)
+        public async Task<Usuario> Adicionar(Usuario usuario)
         {
-            _dbContext.Usuarios.Add(usuario);
-            _dbContext.SaveChanges();
+            usuario.DataCadastro = DateTime.Now;
+            await _dbContext.Usuarios.AddAsync(usuario);
+            await _dbContext.SaveChangesAsync();
             return usuario;
         }
-        public Usuario Atualizar(Usuario usuario, int id)
+        public async Task<Usuario> Atualizar(Usuario usuario, int id)
         {
-            Usuario usuarioPorId = BuscarPorID(id);
+            Usuario usuarioPorId = await BuscarPorID(id);
             if (usuarioPorId == null)
             {
                 throw new Exception($"Usuario com id ={id} não encontrado!");
@@ -40,18 +41,18 @@ namespace ControleDeUsuarios.Repositorios
             usuarioPorId.Nome = usuario.Nome;
             usuarioPorId.Email = usuario.Email;
             _dbContext.Update(usuarioPorId);
-            _dbContext.SaveChanges();
+            await _dbContext.SaveChangesAsync();
             return usuarioPorId;
         }
-        public bool Apagar(int id)
+        public async Task<bool> Apagar(int id)
         {
-            Usuario usuarioPorId = BuscarPorID(id);
+            Usuario usuarioPorId = await BuscarPorID(id);
             if (usuarioPorId == null)
             {
                 throw new Exception($"Usuario com id ={id} não encontrado!");
             }
             _dbContext.Remove(usuarioPorId);
-            _dbContext.SaveChanges();
+            await _dbContext.SaveChangesAsync();
             return true;
         }
     }

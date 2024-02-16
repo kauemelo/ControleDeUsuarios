@@ -49,9 +49,9 @@ namespace ControleDeUsuarios.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<Usuario>> BuscarTodosUsuarios()
+        public async Task<ActionResult<List<Usuario>>> BuscarTodosUsuarios()
         {
-            var ListaDeUsuarios = _usuarioRepositorio.BuscarTodosUsuarios();
+            var ListaDeUsuarios = await _usuarioRepositorio.BuscarTodosUsuarios();
             if (ListaDeUsuarios == null)
             {
                 return NotFound("Nenhum Usuario Encontrado!");
@@ -61,9 +61,9 @@ namespace ControleDeUsuarios.Controllers
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Usuario> BuscarUsuarioPorID(int id)
+        public async Task<ActionResult<Usuario>> BuscarUsuarioPorID(int id)
         {
-            Usuario usuario = _usuarioRepositorio.BuscarPorID(id);
+            Usuario usuario =await _usuarioRepositorio.BuscarPorID(id);
             if (usuario == null)
             {
                 return NotFound();
@@ -72,25 +72,25 @@ namespace ControleDeUsuarios.Controllers
         }
 
         [HttpPost]
-        public IActionResult Cadastrar([FromBody] Usuario usuario)
+        public async Task<IActionResult> Cadastrar([FromBody] Usuario usuario)
         {
-            Usuario usuarioCadastrado = _usuarioRepositorio.Adicionar(usuario);
+            Usuario usuarioCadastrado = await _usuarioRepositorio.Adicionar(usuario);
             return Ok(usuarioCadastrado);
         }
 
         [HttpPut("{id}")]
-        public IActionResult atualizar([FromBody] Usuario usuario, int id)
+        public async Task<IActionResult> atualizar([FromBody] Usuario usuario, int id)
         {
             usuario.Id = id;
-            Usuario usuarioAtualizado = _usuarioRepositorio.Atualizar(usuario, id);
+            Usuario usuarioAtualizado = await _usuarioRepositorio.Atualizar(usuario, id);
 
             return Ok(usuarioAtualizado);
         }
 
-        [HttpDelete("{Id}")]
-        public IActionResult Excluir(int id)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Excluir(int id)
         {
-            var excluirUsuario = _usuarioRepositorio.Apagar(id);
+            var excluirUsuario = await _usuarioRepositorio.Apagar(id);
             string msg = (excluirUsuario == true ? "Usuario excluido com sucesso." : "Erro ao exluir.");
             return Ok(msg);
         }
